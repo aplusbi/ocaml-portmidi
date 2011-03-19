@@ -75,7 +75,7 @@ CAMLprim value caml_pm_get_default_output_device_id(value unit)
 CAMLprim value caml_pm_get_device_info(value device_id)
 {
     CAMLparam1(device_id);
-    CAMLlocal1(ret);
+    value ret;
 
     PmDeviceInfo *info = Pm_GetDeviceInfo(Int_val(device_id));
     ret = caml_alloc_tuple(6);
