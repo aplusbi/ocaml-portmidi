@@ -1,0 +1,43 @@
+OASISFormat:  0.1
+Name:         ocaml-portmidi
+Version:      0.0.2+dev
+License:      LGPL-2.1 with OCaml linking exception
+Authors:      Niki Yoshiuchi
+Copyrights:   (C) 2011 Niki Yoshiuchi
+BuildTools:   ocamlbuild
+Plugins:      DevFiles (0.2), META (0.2)
+
+Synopsis: OCaml bindings to portmidi
+Description:
+  OCaml bindings to portmidi
+
+Flag strict
+  Description: Strict compile-time checks
+  Default: true
+
+Library portmidi
+  Path: src/
+  Modules: Portmidi
+  if flag(strict) && ccomp_type(cc)
+    CCOpt: -std=c89 -pedantic -Wno-long-long
+  cclib: -lportmidi
+  CSources: portmidi_stubs.c
+  BuildDepends:
+
+Executable test
+  Path: test/
+  Install: false
+  Custom: true
+  CompiledObject: best
+  MainIs: test.ml
+  BuildDepends: portmidi
+
+Document api
+  Title: API reference for portmidi
+  Type: ocamlbuild (0.2)
+  Authors: Niki Yoshiuchi
+  BuildTools: ocamldoc
+  Format: HTML
+  Index: index.html
+  XOCamlbuildPath:      src/
+  XOCamlbuildLibraries: portmidi

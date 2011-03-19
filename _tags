@@ -1,0 +1,17 @@
+# OASIS_START
+# DO NOT EDIT (digest: 86cb518361db568c9b4748c56cbc1da9)
+# Library portmidi
+"src": include
+<src/*.ml{,i}>: oasis_library_portmidi_ccopt
+"src/portmidi_stubs.c": oasis_library_portmidi_ccopt
+<src/portmidi.{cma,cmxa}>: oasis_library_portmidi_cclib
+"src/libportmidi.lib": oasis_library_portmidi_cclib
+"src/dllportmidi.dll": oasis_library_portmidi_cclib
+"src/libportmidi.a": oasis_library_portmidi_cclib
+"src/dllportmidi.so": oasis_library_portmidi_cclib
+<src/portmidi.{cma,cmxa}>: use_libportmidi
+# Executable test
+<test/test.{native,byte}>: use_portmidi
+<test/*.ml{,i}>: use_portmidi
+<test/test.{native,byte}>: custom
+# OASIS_STOP
