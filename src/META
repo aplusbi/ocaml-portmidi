@@ -1,9 +1,9 @@
 # OASIS_START
-# DO NOT EDIT (digest: af7bcc6022838c91b2c421946b6628ea)
+# DO NOT EDIT (digest: 28444727592694e5f70d35341a8b41fe)
 version = "0.0.2+dev"
 description = "OCaml bindings to portmidi"
-archive(byte) = "portmidi.cma"
-archive(native) = "portmidi.cmxa"
-exists_if = "portmidi.cma"
+archive(byte) = "ocaml_portmidi.cma"
+archive(native) = "ocaml_portmidi.cmxa"
+exists_if = "ocaml_portmidi.cma"
 # OASIS_STOP
 

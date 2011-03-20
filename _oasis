@@ -15,22 +15,20 @@ Flag strict
   Description: Strict compile-time checks
   Default: true
 
-Library portmidi
+Library ocaml_portmidi
   Path: src/
   Modules: Portmidi
   if flag(strict) && ccomp_type(cc)
     CCOpt: -std=c89 -pedantic -Wno-long-long
-  cclib: -lportmidi
   CSources: portmidi_stubs.c
-  BuildDepends:
+  CCLib: -lportmidi
 
 Executable test
   Path: test/
   Install: false
-  Custom: true
   CompiledObject: best
   MainIs: test.ml
-  BuildDepends: portmidi
+  BuildDepends: ocaml_portmidi
 
 Document api
   Title: API reference for portmidi
@@ -40,4 +38,4 @@ Document api
   Format: HTML
   Index: index.html
   XOCamlbuildPath:      src/
-  XOCamlbuildLibraries: portmidi
+  XOCamlbuildLibraries: ocaml_portmidi

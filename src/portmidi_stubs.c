@@ -38,21 +38,24 @@ static struct custom_operations stream_ops =
 CAMLprim value caml_pm_initialize(value unit)
 {
     CAMLparam0();
-    int ret = Pm_Initialize();
+    int ret;
+    ret = Pm_Initialize();
     CAMLreturn(Val_unit);
 }
 
 CAMLprim value caml_pm_terminate(value unit)
 {
     CAMLparam0();
-    int ret = Pm_Terminate();
+    int ret;
+    ret = Pm_Terminate();
     CAMLreturn(Val_unit);
 }
 
 CAMLprim value caml_pm_count_devices(value unit)
 {
     CAMLparam0();
-    int ret = Pm_CountDevices();
+    int ret;
+    ret = Pm_CountDevices();
     CAMLreturn(Val_int(ret));
 }
 
@@ -77,7 +80,7 @@ CAMLprim value caml_pm_get_device_info(value device_id)
     CAMLparam1(device_id);
     value ret;
 
-    PmDeviceInfo *info = Pm_GetDeviceInfo(Int_val(device_id));
+    const PmDeviceInfo *info = Pm_GetDeviceInfo(Int_val(device_id));
     ret = caml_alloc_tuple(6);
     Field(ret, 0) = Val_int(info->structVersion);
     Field(ret, 1) = caml_copy_string(info->interf);
@@ -88,12 +91,34 @@ CAMLprim value caml_pm_get_device_info(value device_id)
     CAMLreturn(ret);
 }
 
-CAMLprim value caml_pm_open_input()
+CAMLprim value caml_pm_open_input(value device_id, value buffer_size, value time_proc, value time_info)
 {
+    CAMLparam4(device_id, buffer_size, time_proc, time_info);
+    stream_t *st;
+    int ret;
+    value ans;
+
+    st = malloc(sizeof(stream_t));
+    ret = Pm_OpenInput(&st->stream, Int_val(device_id), NULL, Int_val(buffer_size), NULL, NULL);
+    ans = caml_alloc_custom(&stream_ops, sizeof(stream_t*), 1, 0);
+    Stream_t_val(ans) = st;
+
+    CAMLreturn(ans);
 }
 
-CAMLprim value caml_pm_open_output()
+CAMLprim value caml_pm_open_output(value device_id, value buffer_size, value time_proc, value time_info, value latency)
 {
+    CAMLparam5(device_id, buffer_size, time_proc, time_info, latency);
+    stream_t *st;
+    int ret;
+    value ans;
+
+    st = malloc(sizeof(stream_t));
+    ret = Pm_OpenOutput(&st->stream, Int_val(device_id), NULL, Int_val(buffer_size), NULL, NULL, Int_val(latency));
+    ans = caml_alloc_custom(&stream_ops, sizeof(stream_t*), 1, 0);
+    Stream_t_val(ans) = st;
+
+    CAMLreturn(ans);
 }
 
 CAMLprim value caml_pm_abort(value st)
@@ -110,11 +135,45 @@ CAMLprim value caml_pm_close(value st)
     CAMLreturn(Val_unit);
 }
 
-CAMLprim value caml_pm_read()
+CAMLprim value caml_pm_read(value st, value buffer, value _ofs, value _len)
 {
+    CAMLparam4(st, buffer, _ofs, _len);
+    CAMLlocal1(field);
+    PmEvent *buf;
+    int len, ofs, i, ret;
+
+    len = Int_val(_len);
+    ofs = Int_val(_ofs);
+    buf = malloc(sizeof(PmEvent) * len);
+    ret = Pm_Read(Stream_val(st), buf, len);
+    for(i = 0; i < len; ++i)
+    {
+        field = Field(buffer, ofs + i);
+        Field(field, 0) = caml_copy_int32(buf[i].message);
+        Field(field, 1) = caml_copy_int32(buf[i].timestamp);
+    }
+
+    CAMLreturn(Val_unit);
 }
 
-CAMLprim value caml_pm_write()
+CAMLprim value caml_pm_write(value st, value buffer, value _ofs, value _len)
 {
+    CAMLparam4(st, buffer, _ofs, _len);
+    CAMLlocal1(field);
+    PmEvent *buf;
+    int len, ofs, i, ret;
+
+    len = Int_val(_len);
+    ofs = Int_val(_ofs);
+    buf = malloc(sizeof(PmEvent) * len);
+    for(i = 0; i < len; ++i)
+    {
+        field = Field(buffer, ofs + i);
+        buf[i].message = Int32_val(Field(field, 0));
+        buf[i].timestamp = Int32_val(Field(field, 1));
+    }
+    ret = Pm_Write(Stream_val(st), buf, len);
+
+    CAMLreturn(Val_unit);
 }
 

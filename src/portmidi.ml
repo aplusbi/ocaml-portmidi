@@ -21,12 +21,12 @@ external get_default_output_device_id : unit -> int = "caml_pm_get_default_outpu
 
 external get_device_info : int -> device_info = "caml_pm_get_device_info"
 
-external open_input : int -> int -> ('a -> 'b) option -> 'a option -> stream = "caml_pm_open_input"
+external open_input : int -> int -> ('a -> int) option -> 'a option -> stream = "caml_pm_open_input"
 
 let open_input ?(time_proc=None) ?(time_info=None) device_id buffer_size =
     open_input device_id buffer_size time_proc time_info
 
-external open_output : int -> int -> ('a -> 'b) option -> 'a option -> int -> stream = "caml_pm_open_output"
+external open_output : int -> int -> ('a -> int) option -> 'a option -> int -> stream = "caml_pm_open_output"
 
 let open_output ?(time_proc=None) ?(time_info=None) device_id buffer_size latency =
     open_output device_id buffer_size time_proc time_info latency
@@ -40,7 +40,7 @@ type event = {
     timestamp : Int32.t 
 }
 
-external read : stream -> event array -> int -> int = "caml_pm_read"
+external read : stream -> event array -> int -> int -> unit = "caml_pm_read"
 
-external write : stream -> event array -> int -> int = "caml_pm_read"
+external write : stream -> event array -> int -> int -> unit = "caml_pm_read"
 

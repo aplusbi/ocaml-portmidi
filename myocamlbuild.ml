@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: ee9c84c0f8ccb34f6e7114dbda803b36) *)
+(* DO NOT EDIT (digest: a544d6eb62f17c73727f7853300cd8dd) *)
 module OASISGettext = struct
 # 21 "/home/niki/projects/ocaml/system/oasis-0.2.0/src/oasis/OASISGettext.ml"
   
@@ -451,11 +451,11 @@ end
 open Ocamlbuild_plugin;;
 let package_default =
   {
-     MyOCamlbuildBase.lib_ocaml = [("src/portmidi", ["src"])];
-     lib_c = [("portmidi", "src/", [])];
+     MyOCamlbuildBase.lib_ocaml = [("src/ocaml_portmidi", ["src"])];
+     lib_c = [("ocaml_portmidi", "src/", [])];
      flags =
        [
-          (["oasis_library_portmidi_ccopt"; "compile"],
+          (["oasis_library_ocaml_portmidi_ccopt"; "compile"],
             [
                (OASISExpr.EBool true, S []);
                (OASISExpr.EAnd
@@ -471,9 +471,9 @@ let package_default =
                       A "-Wno-long-long"
                    ])
             ]);
-          (["oasis_library_portmidi_cclib"; "link"],
+          (["oasis_library_ocaml_portmidi_cclib"; "link"],
             [(OASISExpr.EBool true, S [A "-cclib"; A "-lportmidi"])]);
-          (["oasis_library_portmidi_cclib"; "ocamlmklib"; "c"],
+          (["oasis_library_ocaml_portmidi_cclib"; "ocamlmklib"; "c"],
             [(OASISExpr.EBool true, S [A "-lportmidi"])])
        ];
      }
