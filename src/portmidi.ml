@@ -40,7 +40,12 @@ type event = {
     timestamp : Int32.t 
 }
 
+external message : int -> int -> int -> Int32.t = "caml_pm_message"
+
 external read : stream -> event array -> int -> int -> unit = "caml_pm_read"
 
-external write : stream -> event array -> int -> int -> unit = "caml_pm_read"
+external write : stream -> event array -> int -> int -> unit = "caml_pm_write"
 
+external pt_start : int -> unit = "caml_pt_start"
+
+external pt_stop : unit -> unit = "caml_pt_stop"

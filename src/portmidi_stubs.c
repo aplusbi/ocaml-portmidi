@@ -7,6 +7,7 @@
 #include <caml/signals.h>
 
 #include <portmidi.h>
+#include <porttime.h>
 
 typedef struct
 {
@@ -135,6 +136,14 @@ CAMLprim value caml_pm_close(value st)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value caml_pm_message(value status, value data1, value data2)
+{
+    CAMLparam3(status, data1, data2);
+    int ret;
+    ret = Pm_Message(Int_val(status), Int_val(data1), Int_val(data2));
+    CAMLreturn(caml_copy_int32(ret));
+}
+
 CAMLprim value caml_pm_read(value st, value buffer, value _ofs, value _len)
 {
     CAMLparam4(st, buffer, _ofs, _len);
@@ -174,6 +183,22 @@ CAMLprim value caml_pm_write(value st, value buffer, value _ofs, value _len)
     }
     ret = Pm_Write(Stream_val(st), buf, len);
 
+    CAMLreturn(Val_unit);
+}
+
+/* PortTime functions */
+
+CAMLprim value caml_pt_start(value resolution)
+{
+    CAMLparam1(resolution);
+    Pt_Start(Int_val(resolution), NULL, NULL);
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value caml_pt_stop(value unit)
+{
+    CAMLparam0();
+    Pt_Stop();
     CAMLreturn(Val_unit);
 }
 
