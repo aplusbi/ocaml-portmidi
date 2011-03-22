@@ -79,7 +79,7 @@ CAMLprim value caml_pm_get_default_output_device_id(value unit)
 CAMLprim value caml_pm_get_device_info(value device_id)
 {
     CAMLparam1(device_id);
-    value ret;
+    CAMLlocal1(ret);
 
     const PmDeviceInfo *info = Pm_GetDeviceInfo(Int_val(device_id));
     ret = caml_alloc_tuple(6);
@@ -95,9 +95,9 @@ CAMLprim value caml_pm_get_device_info(value device_id)
 CAMLprim value caml_pm_open_input(value device_id, value buffer_size, value time_proc, value time_info)
 {
     CAMLparam4(device_id, buffer_size, time_proc, time_info);
+    CAMLlocal1(ans);
     stream_t *st;
     int ret;
-    value ans;
 
     st = malloc(sizeof(stream_t));
     ret = Pm_OpenInput(&st->stream, Int_val(device_id), NULL, Int_val(buffer_size), NULL, NULL);
@@ -110,9 +110,9 @@ CAMLprim value caml_pm_open_input(value device_id, value buffer_size, value time
 CAMLprim value caml_pm_open_output(value device_id, value buffer_size, value time_proc, value time_info, value latency)
 {
     CAMLparam5(device_id, buffer_size, time_proc, time_info, latency);
+    CAMLlocal1(ans);
     stream_t *st;
     int ret;
-    value ans;
 
     st = malloc(sizeof(stream_t));
     ret = Pm_OpenOutput(&st->stream, Int_val(device_id), NULL, Int_val(buffer_size), NULL, NULL, Int_val(latency));
