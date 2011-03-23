@@ -40,12 +40,32 @@ type event = {
     timestamp : Int32.t 
 }
 
-external message : int -> int -> int -> Int32.t = "caml_pm_message"
+let message status data1 data2 =
+    let s = Int32.of_int (status land 0xFF) in
+    let d1 = Int32.of_int ((data1 lsl 8) land 0xFF00) in
+    let d2 = Int32.logand (Int32.of_int (data2 lsl 16)) (Int32.of_int 0xFF0000) in
+    Int32.logor s (Int32.logor d1 d2)
 
-external read : stream -> event array -> int -> int -> unit = "caml_pm_read"
+let message_status msg =
+    Int32.to_int (Int32.logand msg (Int32.of_int 0xFF))
+
+let message_data1 msg =
+    Int32.to_int (Int32.logand (Int32.shift_right msg 8) (Int32.of_int 0xFF))
+
+let message_data2 msg =
+    Int32.to_int (Int32.logand (Int32.shift_right msg 16) (Int32.of_int 0xFF))
+
+let message_contents msg =
+    (message_status msg), (message_data1 msg), (message_data2 msg)
+
+external poll : stream -> bool = "caml_pm_poll"
+
+external read : stream -> event array -> int -> int -> int = "caml_pm_read"
 
 external write : stream -> event array -> int -> int -> unit = "caml_pm_write"
 
 external pt_start : int -> unit = "caml_pt_start"
 
 external pt_stop : unit -> unit = "caml_pt_stop"
+
+external pt_time : unit -> Int32.t = "caml_pt_time"
