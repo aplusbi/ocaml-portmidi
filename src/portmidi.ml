@@ -64,6 +64,8 @@ external read : stream -> event array -> int -> int -> int = "caml_pm_read"
 
 external write : stream -> event array -> int -> int -> unit = "caml_pm_write"
 
+external write_short : stream -> Int32.t -> Int32.t -> unit = "caml_pm_write_short"
+
 external pt_start : int -> unit = "caml_pt_start"
 
 external pt_stop : unit -> unit = "caml_pt_stop"

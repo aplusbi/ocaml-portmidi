@@ -187,6 +187,20 @@ CAMLprim value caml_pm_write(value st, value buffer, value _ofs, value _len)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value caml_pm_write_short(value st, value when, value msg)
+{
+    CAMLparam3(st, when, msg);
+    int ret;
+    ret = Pm_WriteShort(Stream_val(st), Int32_val(when), Int32_val(msg));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value caml_pm_write_sysex(value st, value when, value msg)
+{
+    CAMLparam3(st, when, msg);
+    CAMLreturn(Val_unit);
+}
+
 /* PortTime functions */
 
 CAMLprim value caml_pt_start(value resolution)
