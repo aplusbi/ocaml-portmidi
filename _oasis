@@ -28,7 +28,7 @@ Executable test
   Install: false
   CompiledObject: best
   MainIs: test.ml
-  BuildDepends: ocaml_portmidi
+  BuildDepends: unix, ocaml_portmidi
 
 Document api
   Title: API reference for portmidi
