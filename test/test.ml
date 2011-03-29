@@ -31,7 +31,7 @@ let test_input () =
     let buf = Array.create 1 {message=Int32.zero; timestamp=Int32.zero} in
     let rec loop () =
         let _ = match poll st with
-        | true -> ignore (read st buf 0 1);
+        | true -> ignore (read_stream st buf 0 1);
             let s, d1, d2 = message_contents buf.(0).message in
             Printf.printf "Read: %d %d %d\n" s d1 d2;
             flush stdout
@@ -67,6 +67,6 @@ let rec main _ =
 
 let _ =
     init ();
-    pt_start(1);
+    Time.start 1;
     at_exit terminate;
     main ()

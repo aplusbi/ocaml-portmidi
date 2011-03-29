@@ -198,6 +198,8 @@ CAMLprim value caml_pm_write_short(value st, value when, value msg)
 CAMLprim value caml_pm_write_sysex(value st, value when, value msg)
 {
     CAMLparam3(st, when, msg);
+    int ret;
+    ret = Pm_WriteSysEx(Stream_val(st), Int32_val(when), (unsigned char*)String_val(msg));
     CAMLreturn(Val_unit);
 }
 
