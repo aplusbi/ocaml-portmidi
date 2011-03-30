@@ -40,12 +40,35 @@ type event = {
     timestamp : Int32.t 
 }
 
-external message : int -> int -> int -> Int32.t = "caml_pm_message"
+let message status data1 data2 =
+    Int32.of_int ((status land 0xFF) lor ((data2 lsl 16) land 0xFF0000) lor ((data1 lsl 8) land 0xFF00))
 
-external read : stream -> event array -> int -> int -> unit = "caml_pm_read"
+let message_status msg =
+    (Int32.to_int msg) land 0xFF
 
-external write : stream -> event array -> int -> int -> unit = "caml_pm_write"
+let message_data1 msg =
+    ((Int32.to_int msg) lsr 8) land 0xFF
 
-external pt_start : int -> unit = "caml_pt_start"
+let message_data2 msg =
+    ((Int32.to_int msg) lsr 16) land 0xFF
 
-external pt_stop : unit -> unit = "caml_pt_stop"
+let message_contents msg =
+    (message_status msg), (message_data1 msg), (message_data2 msg)
+
+external poll : stream -> bool = "caml_pm_poll"
+
+external read_stream : stream -> event array -> int -> int -> int = "caml_pm_read"
+
+external write_stream : stream -> event array -> int -> int -> unit = "caml_pm_write"
+
+external write_short : stream -> Int32.t -> Int32.t -> unit = "caml_pm_write_short"
+
+external write_sysex : stream -> Int32.t -> string -> unit = "caml_pm_write_sysex"
+
+module Time = struct
+    external start : int -> unit = "caml_pt_start"
+
+    external stop : unit -> unit = "caml_pt_stop"
+
+    external time : unit -> Int32.t = "caml_pt_time"
+end

@@ -136,12 +136,12 @@ CAMLprim value caml_pm_close(value st)
     CAMLreturn(Val_unit);
 }
 
-CAMLprim value caml_pm_message(value status, value data1, value data2)
+CAMLprim value caml_pm_poll(value st)
 {
-    CAMLparam3(status, data1, data2);
+    CAMLparam1(st);
     int ret;
-    ret = Pm_Message(Int_val(status), Int_val(data1), Int_val(data2));
-    CAMLreturn(caml_copy_int32(ret));
+    ret = Pm_Poll(Stream_val(st));
+    CAMLreturn(Val_bool(ret));
 }
 
 CAMLprim value caml_pm_read(value st, value buffer, value _ofs, value _len)
@@ -157,12 +157,13 @@ CAMLprim value caml_pm_read(value st, value buffer, value _ofs, value _len)
     ret = Pm_Read(Stream_val(st), buf, len);
     for(i = 0; i < len; ++i)
     {
-        field = Field(buffer, ofs + i);
+        field = caml_alloc_tuple(2);
         Field(field, 0) = caml_copy_int32(buf[i].message);
         Field(field, 1) = caml_copy_int32(buf[i].timestamp);
+        Field(buffer, ofs + i) = field;
     }
 
-    CAMLreturn(Val_unit);
+    CAMLreturn(Val_int(ret));
 }
 
 CAMLprim value caml_pm_write(value st, value buffer, value _ofs, value _len)
@@ -186,6 +187,22 @@ CAMLprim value caml_pm_write(value st, value buffer, value _ofs, value _len)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value caml_pm_write_short(value st, value when, value msg)
+{
+    CAMLparam3(st, when, msg);
+    int ret;
+    ret = Pm_WriteShort(Stream_val(st), Int32_val(when), Int32_val(msg));
+    CAMLreturn(Val_unit);
+}
+
+CAMLprim value caml_pm_write_sysex(value st, value when, value msg)
+{
+    CAMLparam3(st, when, msg);
+    int ret;
+    ret = Pm_WriteSysEx(Stream_val(st), Int32_val(when), (unsigned char*)String_val(msg));
+    CAMLreturn(Val_unit);
+}
+
 /* PortTime functions */
 
 CAMLprim value caml_pt_start(value resolution)
@@ -200,5 +217,13 @@ CAMLprim value caml_pt_stop(value unit)
     CAMLparam0();
     Pt_Stop();
     CAMLreturn(Val_unit);
+}
+
+CAMLprim value caml_pt_time(value unit)
+{
+    CAMLparam0();
+    PtTimestamp ret;
+    ret = Pt_Time();
+    CAMLreturn(caml_copy_int32(ret));
 }
 
