@@ -1,4 +1,5 @@
 _build/
+setup.log
 *.o
 *.cmo
 *.cmx
