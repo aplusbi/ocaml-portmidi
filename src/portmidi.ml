@@ -1,4 +1,22 @@
 type stream
+type error =
+    PmHostError
+    | PmInvalidDeviceId
+    | PmInsufficientMemory
+    | PmBufferTooSmall
+    | PmBufferOverflow
+    | PmBadPtr
+    | PmBadData
+    | PmInternalError
+    | PmBufferMaxSize
+    | PmUnkown
+
+exception Error of error
+
+let () =
+  Callback.register_exception "portmidi_exn_error" (Error PmHostError)
+
+external string_of_error : error -> string = "caml_pm_get_error_text"
 
 external init : unit -> unit = "caml_pm_initialize"
 
@@ -66,6 +84,14 @@ external write_short : stream -> Int32.t -> Int32.t -> unit = "caml_pm_write_sho
 external write_sysex : stream -> Int32.t -> string -> unit = "caml_pm_write_sysex"
 
 module Time = struct
+    type error =
+        PtHostError 
+        | PtAlreadyStarted 
+        | PtAlreadyStopped
+        | PtInsufficientMemory
+        | PtUnkown 
+
+    exception Error of error
     external start : int -> unit = "caml_pt_start"
 
     external stop : unit -> unit = "caml_pt_stop"

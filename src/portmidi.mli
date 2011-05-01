@@ -4,6 +4,27 @@
 * @author Niki Yoshiuchi
 *)
 
+(** {2 Exceptions} *)
+(** Types of errors *)
+type error =
+    PmHostError
+    | PmInvalidDeviceId
+    | PmInsufficientMemory
+    | PmBufferTooSmall
+    | PmBufferOverflow
+    | PmBadPtr
+    | PmBadData
+    | PmInternalError
+    | PmBufferMaxSize
+    | PmUnkown
+
+(** An error occured.  Use [string_of_error] to get a description of the
+  * error. *)
+exception Error of error
+
+(** Get a description of an error. *)
+external string_of_error : error -> string = "caml_pm_get_error_text"
+
 (** {2 General} *)
 (** Initialize the portmidi library.  Call this before opening any streams *)
 external init : unit -> unit = "caml_pm_initialize"
@@ -110,7 +131,26 @@ external write_sysex : stream -> Int32.t -> string -> unit
 
 module Time :
   sig
+    (** {2 Exceptions} *)
+    (** Types of errors *)
+    type error =
+        PtHostError  (** a system-specific error occurred *)
+        | PtAlreadyStarted (** cannot start timer because it is already started *)
+        | PtAlreadyStopped (** cannot stop timer because it is already stopped *)
+        | PtInsufficientMemory (** memory could not be allocated *)
+        | PtUnkown (** Unkown error *)
+
+    (** An error occured *)
+    exception Error of error
+
+    (** {2 General} *)
+    (** [start res] starts the timer with  resolution [res]
+     * in milliseconds. *)
     external start : int -> unit = "caml_pt_start"
+
+    (** Stop the timer *)
     external stop : unit -> unit = "caml_pt_stop"
+    
+    (** Get the time in milliseconds *)
     external time : unit -> Int32.t = "caml_pt_time"
   end
