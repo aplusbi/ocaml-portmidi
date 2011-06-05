@@ -18,9 +18,9 @@ let () =
 
 external string_of_error : error -> string = "caml_pm_get_error_text"
 
-external init : unit -> unit = "caml_pm_initialize"
+external init : unit -> unit = "caml_pm_initialize" "noalloc"
 
-external terminate : unit -> unit = "caml_pm_terminate"
+external terminate : unit -> unit = "caml_pm_terminate" "noalloc"
 
 type device_info = {
     struct_version : int; (**< this internal structure version *) 
@@ -31,11 +31,13 @@ type device_info = {
     opened : bool (**< used by generic PortMidi code to do error checking on arguments *)
 }
 
-external count_devices : unit -> int = "caml_pm_count_devices"
+external count_devices : unit -> int = "caml_pm_count_devices" "noalloc"
 
-external get_default_input_device_id : unit -> int = "caml_pm_get_default_input_device_id"
+external get_default_input_device_id : unit -> int =
+    "caml_pm_get_default_input_device_id" "noalloc"
 
-external get_default_output_device_id : unit -> int = "caml_pm_get_default_output_device_id"
+external get_default_output_device_id : unit -> int =
+    "caml_pm_get_default_output_device_id" "noalloc"
 
 external get_device_info : int -> device_info = "caml_pm_get_device_info"
 
@@ -92,9 +94,9 @@ module Time = struct
         | PtUnkown 
 
     exception Error of error
-    external start : int -> unit = "caml_pt_start"
+    external start : int -> unit = "caml_pt_start" "noalloc"
 
-    external stop : unit -> unit = "caml_pt_stop"
+    external stop : unit -> unit = "caml_pt_stop" "noalloc"
 
-    external time : unit -> Int32.t = "caml_pt_time"
+    external time : unit -> Int32.t = "caml_pt_time" "noalloc"
 end

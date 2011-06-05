@@ -72,47 +72,42 @@ CAMLprim value caml_pm_get_error_text(value error)
 
 CAMLprim value caml_pm_initialize(value unit)
 {
-    CAMLparam0();
     int ret;
     ret = Pm_Initialize();
     pm_err(ret);
-    CAMLreturn(Val_unit);
+    return Val_unit;
 }
 
 CAMLprim value caml_pm_terminate(value unit)
 {
-    CAMLparam0();
     int ret;
     ret = Pm_Terminate();
     pm_err(ret);
-    CAMLreturn(Val_unit);
+    return Val_unit;
 }
 
 CAMLprim value caml_pm_count_devices(value unit)
 {
-    CAMLparam0();
     int ret;
     ret = Pm_CountDevices();
     pm_err(ret);
-    CAMLreturn(Val_int(ret));
+    return Val_int(ret);
 }
 
 CAMLprim value caml_pm_get_default_input_device_id(value unit)
 {
-    CAMLparam0();
     int ret;
     ret = Pm_GetDefaultInputDeviceID();
     pm_err(ret);
-    CAMLreturn(Val_int(ret));
+    return Val_int(ret);
 }
 
 CAMLprim value caml_pm_get_default_output_device_id(value unit)
 {
-    CAMLparam0();
     int ret;
     ret = Pm_GetDefaultOutputDeviceID();
     pm_err(ret);
-    CAMLreturn(Val_int(ret));
+    return Val_int(ret);
 }
 
 CAMLprim value caml_pm_get_device_info(value device_id)
@@ -297,25 +292,22 @@ static int pt_err(int ret)
 
 CAMLprim value caml_pt_start(value resolution)
 {
-    CAMLparam1(resolution);
     int ret = Pt_Start(Int_val(resolution), NULL, NULL);
     pt_err(ret);
-    CAMLreturn(Val_unit);
+    return Val_unit;
 }
 
 CAMLprim value caml_pt_stop(value unit)
 {
-    CAMLparam0();
     int ret = Pt_Stop();
     pt_err(ret);
-    CAMLreturn(Val_unit);
+    return Val_unit;
 }
 
 CAMLprim value caml_pt_time(value unit)
 {
-    CAMLparam0();
     PtTimestamp ret;
     ret = Pt_Time();
-    CAMLreturn(caml_copy_int32(ret));
+    return caml_copy_int32(ret);
 }
 
