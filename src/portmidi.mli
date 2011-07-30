@@ -72,7 +72,7 @@ val open_input :
   ?time_proc:('a -> int) option ->
   ?time_info:'a option -> int -> int -> stream
 
-(** [open_input ?time_proc:(Some time_fun) ?time_info:(Some time_arg) device_id * buffer_size latency]
+(** [open_output ?time_proc:(Some time_fun) ?time_info:(Some time_arg) device_id * buffer_size latency]
  * opens a MIDI stream ready for ouput on device [device_id] with a buffer of
  * [buffer_size].  [latency] is the delay in milliseconds applied to the time
  * stamp. *)
@@ -153,4 +153,7 @@ module Time :
     
     (** Get the time in milliseconds *)
     external time : unit -> Int32.t = "caml_pt_time" "noalloc"
+
+    (** [sleep time] sleeps for [time] milliseconds *)
+    external sleep : int -> unit = "caml_pt_sleep" "noalloc"
   end

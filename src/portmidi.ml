@@ -99,4 +99,6 @@ module Time = struct
     external stop : unit -> unit = "caml_pt_stop" "noalloc"
 
     external time : unit -> Int32.t = "caml_pt_time" "noalloc"
+
+    external sleep : int -> unit = "caml_pt_sleep" "noalloc"
 end

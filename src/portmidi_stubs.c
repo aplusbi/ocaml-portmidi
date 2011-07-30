@@ -311,3 +311,9 @@ CAMLprim value caml_pt_time(value unit)
     return caml_copy_int32(ret);
 }
 
+CAMLprim value caml_pt_sleep(value time)
+{
+    Pt_Sleep(Val_int(time));
+    return Val_unit;
+}
+
