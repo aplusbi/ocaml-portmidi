@@ -1,0 +1,16 @@
+ocaml-portmidi
+
+Prerequisites:
+
+- ocaml (3.11, maybe earlier)
+- make
+- ocamlfind 
+- Portmidi
+
+Installing :
+1) ./configure
+2) make
+3) make install
+
+Uninstalling :
+1) make uninstall
