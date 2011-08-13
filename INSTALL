@@ -12,5 +12,9 @@ Installing :
 2) make
 3) make install
 
+Documentation :
+1) ./configure
+2) make doc
+
 Uninstalling :
 1) make uninstall

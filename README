@@ -1,0 +1,1 @@
+OCaml-Portmidi is a set of thin bindings to the Portmidi library.  Portmidi providescross-platform, low-level MIDI support.  Portmidi can connect to MIDI ports (devices) and then read/write MIDI data from/to the port.
