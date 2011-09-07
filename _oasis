@@ -21,7 +21,7 @@ Library ocaml_portmidi
   if flag(strict) && ccomp_type(cc)
     CCOpt: -std=c89 -pedantic -Wno-long-long
   CSources: portmidi_stubs.c
-  CCLib: -lportmidi
+  CCLib: -lportmidi -lporttime
 
 Executable test
   Path: test/

@@ -1,5 +1,5 @@
 (* OASIS_START *)
-(* DO NOT EDIT (digest: a544d6eb62f17c73727f7853300cd8dd) *)
+(* DO NOT EDIT (digest: 4ab632cab5102241387ff6e6f028fda9) *)
 module OASISGettext = struct
 # 21 "/home/niki/projects/ocaml/system/oasis-0.2.0/src/oasis/OASISGettext.ml"
   
@@ -472,9 +472,12 @@ let package_default =
                    ])
             ]);
           (["oasis_library_ocaml_portmidi_cclib"; "link"],
-            [(OASISExpr.EBool true, S [A "-cclib"; A "-lportmidi"])]);
+            [
+               (OASISExpr.EBool true,
+                 S [A "-cclib"; A "-lportmidi"; A "-cclib"; A "-lporttime"])
+            ]);
           (["oasis_library_ocaml_portmidi_cclib"; "ocamlmklib"; "c"],
-            [(OASISExpr.EBool true, S [A "-lportmidi"])])
+            [(OASISExpr.EBool true, S [A "-lportmidi"; A "-lporttime"])])
        ];
      }
   ;;
